@@ -92,8 +92,10 @@ public class Reader {
   private static long countRecords(Connection conn, TableName name) throws Exception {
     try (Table table = conn.getTable(name)) {
       Scan scan = new Scan();
+      scan.addFamily(FAMILY);
       scan.addColumn(FAMILY, QUAL1);
       scan.addColumn(FAMILY, QUAL2);
+      scan.setCacheBlocks(true);
       scan.setCaching(1);
       scan.setBatch(1);
       ResultScanner scanner = table.getScanner(scan);
