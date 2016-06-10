@@ -64,10 +64,12 @@ public class Reader {
       // Write data
       log.info("Populating table");
       writeData(conn, name);
+    } else {
+      log.info("Table exists, not recreating");
     }
 
     log.info("Counting records in table");
-    System.out.println("Found " + countRecords(conn, name) + " records");
+    count(conn, name);
   }
 
   private static void createTable(Connection conn, TableName name) throws Exception {
@@ -89,7 +91,7 @@ public class Reader {
     }
   }
 
-  private static long countRecords(Connection conn, TableName name) throws Exception {
+  private static void count(Connection conn, TableName name) throws Exception {
     try (Table table = conn.getTable(name)) {
       Scan scan = new Scan();
       scan.addFamily(FAMILY);
@@ -100,11 +102,13 @@ public class Reader {
       scan.setBatch(1);
       ResultScanner scanner = table.getScanner(scan);
       Result result = null;
-      long count = 0;
+      long numCells = 0;
+      long numRows = 0;
       while (null != (result = scanner.next())) {
-        count += result.getMap().size();
+        numRows++;
+        numCells += result.listCells().size();
       }
-      return count;
+      System.out.println("numRows=" + numRows + ", numCells=" + numCells + " for " + name);
     }
   }
 }
