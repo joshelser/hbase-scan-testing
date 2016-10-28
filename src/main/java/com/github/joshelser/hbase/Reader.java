@@ -81,7 +81,7 @@ public class Reader {
   private static void writeData(Connection conn, TableName name) throws Exception {
     try (BufferedMutator writer = conn.getBufferedMutator(name)) {
       for (int i = 0; i < 1000 * 1000; i++) {
-        Put p = new Put(Bytes.toBytes(i));
+        Put p = new Put(Integer.toString(i).getBytes());
         for (int j = 0; j < 2; j++) {
           p.addColumn(FAMILY, QUAL1, VALUE1);
           p.addColumn(FAMILY, QUAL2, VALUE2);
