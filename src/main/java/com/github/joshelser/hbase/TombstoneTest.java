@@ -38,6 +38,7 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
+import org.apache.hadoop.hbase.io.compress.Compression.Algorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,7 @@ import com.google.common.base.Stopwatch;
 public class TombstoneTest implements Runnable {
   private static final Logger log = LoggerFactory.getLogger(TombstoneTest.class);
 
-  private static final HColumnDescriptor F1 = new HColumnDescriptor("f1");
+  private static final HColumnDescriptor F1 = new HColumnDescriptor("f1").setCompressionType(Algorithm.SNAPPY);
   private static final HColumnDescriptor Q1 = new HColumnDescriptor("q1");
   private static final HColumnDescriptor Q2 = new HColumnDescriptor("q2");
   private static final HColumnDescriptor Q3 = new HColumnDescriptor("q3");
